@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const process = require('node:process');
 
 const readline = require('readline').createInterface({
   input: process.stdin,
@@ -8,12 +9,17 @@ const readline = require('readline').createInterface({
 
 let pathName = path.join(__dirname, 'text.txt');
 
-fs.appendFile(pathName, 'r+', (err) => {
+fs.open(pathName, 'wx', (err) => {
   if (err) throw err;
   // console.log('Введите текст');
 });
 
 readline.question('Введите текст', text => {
-  fs.writeFile(pathName, text);
-  readline.close();
+  console.log(text);
+  fs.appendFile(pathName, text, (error) => {
+    if (error) throw error;
+  });
+  // readline.close();
 });
+
+
